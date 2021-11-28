@@ -19,7 +19,8 @@ class SPARKDataset:
 
     """ Class for dataset inspection: easily accessing single images, and corresponding ground truth pose data. """
 
-    def __init__(self, root_dir='./spark_data',split = 'train'):
+    def __init__(self, root_dir='./spark_data',split = 'train', depth = 'depth'):
+        self.depth_dir = os.path.join(root_dir, depth)
         self.root_dir = os.path.join(root_dir, split)
         self.labels = process_labels(root_dir,split)
         self.class_map =  {'AcrimSat':0, 'Aquarius':1, 'Aura':2, 'Calipso':3, 'Cloudsat':4, 'CubeSat':5,
@@ -31,11 +32,15 @@ class SPARKDataset:
 
         sat_name = self.labels.iloc[i]['class']
         img_name = self.labels.iloc[i]['image']
-        image_name = f'{self.root_dir}/train_rgb/{sat_name}/{img_name}'
+        depth_img_name = self.labels.iloc[i]['depth']
+        image_name = f'{self.root_dir}/{sat_name}/{img_name}'
+        depth_image_name = f'{self.depth_dir}/{sat_name}/{depth_img_name}'
         print(image_name)
         image = io.imread(image_name)
+        depth = io.imread(depth_image_name)
 
-        return image , self.class_map[sat_name]
+
+        return image , depth, self.class_map[sat_name]
 
     def get_bbox(self, i=0):
 
@@ -50,17 +55,23 @@ class SPARKDataset:
 
 
 
-    def visualize(self,i, size=(15,15),  ax=None):
+    def visualize(self,i, size=(15,15),  ax=None, image_type='rgb'):
 
         """ Visualizing image, with ground truth pose with axes projected to training image. """
 
         if ax is None:
             ax = plt.gca()
             
-        image, img_class = self.get_image(i)
+        image, depth, img_class = self.get_image(i)
         min_x, min_y, max_x, max_y   = self.get_bbox(i)
 
-        ax.imshow(image,vmin=0, vmax=255)
+        if image_type=='rgb':
+            ax.imshow(image,vmin=0, vmax=255)
+        elif image_type=='depth':
+            ax.imshow(depth, vmin=0, vmax=255)
+        else:
+            print('Incorrect parameter: image_type. Exiting function!')
+            return
 
 
         rect = mpatches.Rectangle((min_y, min_x), max_y - min_y, max_x - min_x,
