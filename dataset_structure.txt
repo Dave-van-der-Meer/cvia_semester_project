@@ -1,0 +1,23 @@
+<PrefetchDataset shapes: {image: (None, None, 3), image/filename: (), image/id: (), objects: {area: (None,), bbox: (None, 4), id: (None,), is_crowd: (None,), label: (None,)}}, types: {image: tf.uint8, image/filename: tf.string, image/id: tf.int64, objects: {area: tf.int64, bbox: tf.float32, id: tf.int64, is_crowd: tf.bool, label: tf.int64}}>
+
+<PrefetchDataset shapes: {
+	image: (None, None, 3), 
+	image/filename: (), 
+	image/id: (), 
+	objects: {
+		area: (None,), 
+		bbox: (None, 4), 
+		id: (None,), 
+		is_crowd: (None,), 
+		label: (None,)}}, 
+
+types: {
+	image: tf.uint8, 
+	image/filename: tf.string, 
+	image/id: tf.int64, 
+	objects: {
+		area: tf.int64, 
+		bbox: tf.float32, 
+		id: tf.int64, 
+		is_crowd: tf.bool, 
+		label: tf.int64}}>
