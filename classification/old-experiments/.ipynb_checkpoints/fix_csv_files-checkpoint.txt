@@ -1,0 +1,14 @@
+Fix CSV files:
+
+with open('/home/users/tdejesus/cvia_dataset/master-data/train_small/labels.csv', 'r+') as csv_file:
+    for line in csv_file:
+        # removing starting and ending quotes of a line
+        pattern1 = re.compile(r'^"|"$',re.MULTILINE)
+        line = re.sub(r'^"|"$',"",line)
+        # substituting escaped quote with a single quote
+        pattern2 = re.compile(r'""')
+        line = re.sub(r'""','"',line)
+
+        corrected_csv = open("new_csv.txt",'a')
+        corrected_csv.write(line)
+        corrected_csv.close()
